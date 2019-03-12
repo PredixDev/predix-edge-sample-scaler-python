@@ -18,4 +18,3 @@ mkdir -p data
 printf "%s" "$ACCESS_TOKEN" > ./data/access_token
 
 echo 'token refreshed'
-
