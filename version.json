@@ -1,12 +1,12 @@
 {
   "name": "Predix Edge Sample Scaler Python",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "private": true,
   "dependencies": {
     "local-setup": "https://github.com/PredixDev/local-setup#1.0.106",
     "predix-scripts": "https://github.com/PredixDev/predix-scripts#1.1.230",
     "predix-webapp-starter": "https://github.com/PredixDev/predix-webapp-starter.git#2.0.80",
-    "predix-edge-sample-scaler-python": "https://github.com/PredixDev/predix-edge-sample-scaler-python.git#1.0.0",
+    "predix-edge-sample-scaler-python": "https://github.com/PredixDev/predix-edge-sample-scaler-python.git#1.0.1",
     "opcua": "https://artifactory.predix.io/artifactory/PREDIX-EXT/predix-edge/2_1_0/apps/adapters/predix-edge-opc-ua-adapter-amd64-20181002-1.1.0.tar.gz#",
     "predix-edge-broker": "https://artifactory.predix.io/artifactory/PREDIX-EXT/predix-edge/2_1_0/os/predix-edge-broker-amd64-20180917-1.0.2.tar.gz#",
     "cloud_gateway": "https://artifactory.predix.io/artifactory/PREDIX-EXT/predix-edge/2_1_0/apps/gateway/predix-edge-cloud-gateway-amd64-20181002-1.1.0.tar.gz#"
