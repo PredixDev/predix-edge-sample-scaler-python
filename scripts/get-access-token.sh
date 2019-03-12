@@ -14,6 +14,7 @@ RESULT=$(curl -X POST $UAA_URL  -H "$AUTH" -H 'Content-Type: application/x-www-f
 ACCESS_TOKEN=$( echo "$RESULT" | jq -r '.["access_token"]' )
 
 # copy the access token to the access_token file in the data folder of your app - where the Cloud Gateway container will look for it
+mkdir -p data
 printf "%s" "$ACCESS_TOKEN" > ./data/access_token
 
 echo 'token refreshed'
