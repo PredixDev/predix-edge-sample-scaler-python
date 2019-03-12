@@ -1,0 +1,4 @@
+---
+image: python:3.7
+command: cd src && apt-get install python3 
+dependency-dirs: /root/lib/python,/root/lib/python$PYTHON_VERSION

@@ -1,0 +1,40 @@
+version: "3.0"
+
+services:
+  opcua-simulator:
+    image: "predixedge/predix-edge-opcua-simulator:1.0.9"
+    networks:
+      - predix-edge-broker_net
+    ports:
+      - 4334:4334
+  opcua:
+    image: "dtr.predix.io/predix-edge/protocol-adapter-opcua:amd64-1.1.0"
+    environment:
+      config: "/config/config-opcua.json"
+    networks:
+      - predix-edge-broker_net
+
+  cloud_gateway:
+    image: "dtr.predix.io/predix-edge/cloud-gateway:amd64-1.1.0"
+    environment:
+      config: "/config/config-cloud-gateway.json"
+    env_file:
+      - /etc/environment
+    networks:
+      - predix-edge-broker_net
+
+  edge-app:
+    image: "predixedge/predix-edge-sample-scaler-python:1.0.0"
+    environment:
+      - PYTHONUNBUFFERED=0 # To shows print statements in docker logs
+      - BROKER=predix-edge-broker
+      - SUB_TOPIC=app_data
+      - PUB_TOPIC=timeseries_data
+      - TAG_NAME=My.App.DOUBLE1
+    networks:
+      - predix-edge-broker_net
+
+
+networks:
+  predix-edge-broker_net:
+    external: true
