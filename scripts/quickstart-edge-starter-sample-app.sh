@@ -154,11 +154,6 @@ if [[ "$BUILD_APP" == "true" ]]; then
   docker build  --no-cache -t "$DOCKER_ORG/$DOCKER_STACK_NAME:latest" -t "$DOCKER_ORG/$DOCKER_STACK_NAME:$dockerVersion" -f ./Dockerfile . --build-arg http_proxy --build-arg https_proxy --build-arg no_proxy
   cd ../..
 fi
-
-docker service ls
-echo ""
-echo ""
-docker network ls
 ########### custom logic ends here ###########
 
 echo "quickstart_args=$QUICKSTART_ARGS"
