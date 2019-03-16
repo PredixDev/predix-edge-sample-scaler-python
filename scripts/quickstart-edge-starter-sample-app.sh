@@ -51,35 +51,35 @@ function local_read_args() {
 BRANCH="master"
 PRINT_USAGE=0
 SKIP_SETUP=false
-
-IZON_SH="https://raw.githubusercontent.com/PredixDev/izon/1.5.0/izon2.sh"
-#ASSET_MODEL="-amrmd predix-ui-seed/server/sample-data/predix-asset/asset-model-metadata.json predix-ui-seed/server/sample-data/predix-asset/asset-model.json"
-REPO_NAME="predix-edge-sample-scaler-python"
-DOCKER_ORG="predixedge"
-DOCKER_STACK_NAME="predix-edge-sample-scaler-python"
-SCRIPT="-script edge-starter-deploy.sh -script-readargs edge-starter-deploy-readargs.sh --run-edge-app"
 VERSION_JSON="version.json"
 PREDIX_SCRIPTS="predix-scripts"
 PREDIX_SCRIPTS_ORG="PredixDev"
-VERSION_JSON="version.json"
+GITHUB_RAW="https://raw.githubusercontent.com"
+IZON_SH="https://raw.githubusercontent.com/PredixDev/izon/1.5.0/izon2.sh"
+
+GITHUB_ORG="PredixDev"
+REPO_NAME="predix-edge-sample-scaler-python"
+DOCKER_ORG="predixedge"
+DOCKER_STACK_NAME="predix-edge-sample-scaler-python"
+SCRIPT="-script edge-starter-deploy.sh -script-readargs edge-starter-deploy-readargs.sh"
+SCRIPT_NAME="quickstart-edge-starter-sample-app.sh"
 APP_DIR="edge-python-scaler"
 APP_NAME="Edge_Python_Scaler"
-GITHUB_RAW="https://raw.githubusercontent.com"
-GITHUB_ORG="PredixDev"
-GITHUB_RAW_REPO="https://raw.githubusercontent.com/PredixDev"
-
-TOOLS="Docker, Git, Python"
-TOOLS_SWITCHES="--docker --git --python"
+TOOLS="Cloud Foundry CLI, Docker, Git, jq, Predix CLI, yq"
+TOOLS_SWITCHES="--cf --docker --git --jq --predixcli --yq"
+TIMESERIES_CHART_ONLY="true"
 
 # Process switches
 local_read_args $@
 
+SCRIPT_LOC="$GITHUB_RAW/$GITHUB_ORG/$REPO_NAME/$BRANCH/scripts/$SCRIPT_NAME"
 VERSION_JSON_URL="$GITHUB_RAW/$GITHUB_ORG/$REPO_NAME/$BRANCH/version.json"
 
 if [[ "$SKIP_PREDIX_SERVICES" == "true" ]]; then
-  QUICKSTART_ARGS="$QUICKSTART_ARGS $SCRIPT -repo-name $REPO_NAME -app-name $DOCKER_STACK_NAME"
+  QUICKSTART_ARGS="$QUICKSTART_ARGS $SCRIPT --run-edge-app -repo-name $REPO_NAME -app-name $DOCKER_STACK_NAME"
 else
-  QUICKSTART_ARGS="$QUICKSTART_ARGS $SCRIPT -uaa -ts -psts -repo-name $REPO_NAME -app-name $DOCKER_STACK_NAME"
+  PS_MODEL="sample-data/predix-asset/Compressor-CMMS-Compressor-2018-Scaled.json"
+  QUICKSTART_ARGS="$QUICKSTART_ARGS $SCRIPT -uaa -ts -psts -psmodel $PS_MODEL --run-edge-app -repo-name $REPO_NAME -app-name $DOCKER_STACK_NAME"
 fi
 
 function check_internet() {
@@ -113,6 +113,14 @@ function init() {
   #get the script that reads version.json
   eval "$(curl -s -L $IZON_SH)"
 
+  #download script and cd
+  getUsingCurl $SCRIPT_LOC
+  chmod 755 $SCRIPT_NAME;
+  if [[ ! $currentDir == *"$REPO_NAME" ]]; then
+    mkdir -p $APP_DIR
+    cd $APP_DIR
+  fi
+
   getVersionFile
   getLocalSetupFuncs $GITHUB_RAW $PREDIX_SCRIPTS_ORG
 }
@@ -131,40 +139,40 @@ fi
 
 getPredixScripts
 #clone the repo itself if running from oneclick script
-#if [[ ! -d "$PREDIX_SCRIPTS/$REPO_NAME" ]]; then
-#  echo "repo not present"
 getCurrentRepo
-#fi
 
-echo "pwd after copy -> $(pwd)"
-echo "quickstart_args=$QUICKSTART_ARGS"
-cd $PREDIX_SCRIPTS/$REPO_NAME
-dockerVersion=$(grep version Dockerfile | awk -F"=" '{print $2}' | tr -d "\"")
-echo "$dockerVersion"
-if [[ "$BUILD_APP" == "true" ]]; then
-  docker build  --no-cache -t "$DOCKER_ORG/$DOCKER_STACK_NAME:latest" -t "$DOCKER_ORG/$DOCKER_STACK_NAME:$dockerVersion" -f ./Dockerfile . --build-arg http_proxy --build-arg https_proxy --build-arg no_proxy
-fi
-cd ../..
-
-export TIMESERIES_CHART_ONLY="true"
-
-source $PREDIX_SCRIPTS/bash/quickstart.sh $QUICKSTART_ARGS
-
-########### custom logic starts here ###########
 if ! [ -d "$logDir" ]; then
   mkdir "$logDir"
   chmod 744 "$logDir"
 fi
 
-########### custom logic ends here ###########
+########### custom logic starts here ###########
+if [[ "$BUILD_APP" == "true" ]]; then
+  cd $PREDIX_SCRIPTS/$REPO_NAME
+  dockerVersion=$(grep version Dockerfile | awk -F"=" '{print $2}' | tr -d "\"")
+  echo "$dockerVersion"
+  docker build  --no-cache -t "$DOCKER_ORG/$DOCKER_STACK_NAME:latest" -t "$DOCKER_ORG/$DOCKER_STACK_NAME:$dockerVersion" -f ./Dockerfile . --build-arg http_proxy --build-arg https_proxy --build-arg no_proxy
+  cd ../..
+fi
+
 docker service ls
 echo ""
 echo ""
 docker network ls
+########### custom logic ends here ###########
+
+echo "quickstart_args=$QUICKSTART_ARGS"
+source $PREDIX_SCRIPTS/bash/quickstart.sh $QUICKSTART_ARGS
 
 echo "" >> $SUMMARY_TEXTFILE
-echo "Edge to Cloud App " >> $SUMMARY_TEXTFILE
+echo "$APP_NAME App quickstart complete " >> $SUMMARY_TEXTFILE
 echo "" >> $SUMMARY_TEXTFILE
 
 cat $SUMMARY_TEXTFILE
-echo "......................................Done......................................"
+
+if [[ $SKIP_PREDIX_SERVICES == false ]]; then
+  __append_new_line_log "To see the data in the cloud, using a browser, open the Front-end App URL shown above.  With login=app_user_1, password=App_User_111" "$quickstartLogDir"
+fi
+__append_new_line_log "" "$logDir"
+__append_new_line_log "Successfully completed $APP_NAME installation!" "$quickstartLogDir"
+__append_new_line_log "" "$logDir"

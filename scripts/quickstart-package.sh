@@ -59,7 +59,7 @@ GITHUB_ORG="PredixDev"
 APP_DIR="edge-python-scaler"
 APP_NAME="Edge_Python_Scaler"
 TOOLS="Docker, Git, JQ, YQ"
-TOOLS_SWITCHES="--cf --docker --git --jq --python2 --python3 --predixcli --yq"
+TOOLS_SWITCHES="--docker --git --jq --yq"
 TIMESERIES_CHART_ONLY="true"
 
 # Process switches
@@ -68,13 +68,6 @@ local_read_args $@
 #variables after processing switches
 SCRIPT_LOC="$GITHUB_RAW/$GITHUB_ORG/$REPO_NAME/$BRANCH/scripts/$SCRIPT_NAME"
 VERSION_JSON_URL="$GITHUB_RAW/$GITHUB_ORG/$REPO_NAME/$BRANCH/version.json"
-
-
-#if [[ "$SKIP_PREDIX_SERVICES" == "false" ]]; then
-#  QUICKSTART_ARGS="$QUICKSTART_ARGS --run-edge-app -p $SCRIPT"
-#else
-#  QUICKSTART_ARGS="$QUICKSTART_ARGS -uaa -ts -psts --run-edge-app -p $SCRIPT"
-#fi
 
 function check_internet() {
   set +e

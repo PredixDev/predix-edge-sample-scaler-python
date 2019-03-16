@@ -1,8 +1,10 @@
 version: "3.0"
+#This file combines all the edge services and our services so that it can be deployed as a unit
 
 services:
   opcua-simulator:
-    image: "predixedge/predix-edge-opcua-simulator:1.0.9"
+    image: "predixedge/predix-edge-opcua-simulator:1.0.10"
+    hostname: "opcua-simulator"
     volumes:
       - ./config:/config
     networks:
@@ -18,11 +20,15 @@ services:
       - ./data:/data
     networks:
       - predix-edge-broker_net
-
   cloud_gateway:
     image: "dtr.predix.io/predix-edge/cloud-gateway:amd64-1.1.0"
     environment:
       config: "/config/config-cloud-gateway.json"
+      http_proxy: ${http_proxy}
+      https_proxy: ${https_proxy}
+      HTTP_PROXY: ${HTTP_PROXY}
+      HTTPS_PROXY: ${HTTP_PROXY}
+      no_proxy: ${no_proxy}
     volumes:
       - ./config:/config
       - ./data:/data
@@ -31,7 +37,7 @@ services:
       - predix-edge-broker_net
 
   edge-app:
-    image: "predixedge/predix-edge-sample-scaler-python:1.0.1"
+    image: "predixedge/predix-edge-sample-scaler-python:1.0.4"
     environment:
       - PYTHONUNBUFFERED=0 # To shows print statements in docker logs
       - BROKER=predix-edge-broker

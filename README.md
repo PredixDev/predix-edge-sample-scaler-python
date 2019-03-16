@@ -140,11 +140,8 @@ Feb 28 03:23:52 predixedge b35f5fc9ed5b[319]: {"messageId":"flex-pipe","body":[{
 ### Software You will Need
 
 In order to develop and run this sample locally you will need:
-* [**Python 3**](https://www.python.org/)
 * [**Docker**](https://www.docker.com/)
 * The *UAA URL*, *ClientID* and *Secret* for the Predix Cloud Time Series service to which you wish to ingest the app's output.
-
-To download dependencies, run `pip3 install -r requirements.txt`. Unit tests are in the [test](test/) directory. To run the tests, run `python3 setup.py test`.
 
 ### Step 1: Install the core Predix Edge components
 
@@ -388,6 +385,14 @@ $ docker logs 0000000000
 #### Option 2: Run all the containers on your machine, except for the Python code
 
 This is very similar to Option 1, only instead of running the application in a Docker container, you run it locally on your machine.
+
+### Software You will Need
+
+In order to develop and run this sample locally you will need:
+* [**Python 3**](https://www.python.org/)
+
+To download dependencies, run `pip3 install -r requirements.txt`. Unit tests are in the [test](test/) directory. To run the tests, run `python3 setup.py test`.
+
 
 ##### Step 1: Run the other containers of the Application
 
