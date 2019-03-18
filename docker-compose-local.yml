@@ -37,7 +37,7 @@ services:
       - predix-edge-broker_net
 
   edge-app:
-    image: "predixedge/predix-edge-sample-scaler-python:1.0.4"
+    image: "predixedge/predix-edge-sample-scaler-python:1.0.5"
     environment:
       - PYTHONUNBUFFERED=0 # To shows print statements in docker logs
       - BROKER=predix-edge-broker

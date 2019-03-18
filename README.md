@@ -137,6 +137,38 @@ Feb 28 03:23:52 predixedge b35f5fc9ed5b[319]: {"messageId":"flex-pipe","body":[{
 
 ## Running Locally in Docker
 
+### Automated set up
+
+If you are not aware of the intricacies of downloading the application on your computer, configuring an Edge Application, and creating a Cloud app, you can run the Quickstart script.
+
+If using the Optional Cloud switch, you will see the Time Series data, sent from the edge, in a Cloud web application with a chart.  
+
+The script will:
+
+- Offer to install tools you will need
+- Use Git to download the Edge Application, build it and get it running locally with all the dependencies
+- Create UAA and Time Series and set up the security in the cloud (optional)
+- Upload a cloud web application to display the Time Series data sent from the edge (optional)
+- Set up Cloud security for the Edge Application (optional)
+
+The manual steps for Edge are in the Manual Set Up section below.  (The cloud manual steps are not listed and require the script to run)
+
+For DevBox, Mac and Linux
+
+If you have a Predix Cloud account with an org/space:
+
+```bash
+bash <( curl https://raw.githubusercontent.com/PredixDev/predix-edge-sample-scaler-python/master/scripts/quickstart-edge-starter-sample-app.sh )
+```
+
+If you do not have a Predix Cloud account with an org/space run this.  The Time Series data will not leave the Edge Ref App and you will not be able to see it in a cloud application.
+
+```bash
+bash <( curl https://raw.githubusercontent.com/PredixDev/predix-edge-sample-scaler-python/master/scripts/quickstart-edge-starter-sample-app.sh ) --skip-predix-services
+```
+
+### Manual Set Up
+
 ### Software You will Need
 
 In order to develop and run this sample locally you will need:
