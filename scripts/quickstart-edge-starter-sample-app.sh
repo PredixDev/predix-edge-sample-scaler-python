@@ -103,10 +103,6 @@ function init() {
     echo 'Please launch the script from the root dir of the project'
     exit 1
   fi
-  if [[ ! $currentDir == *"$REPO_NAME" ]]; then
-    mkdir -p $APP_DIR
-    cd $APP_DIR
-  fi
 
   check_internet
 

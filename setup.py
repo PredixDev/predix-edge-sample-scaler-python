@@ -11,7 +11,7 @@ with open('README.md') as file:
 
 setup(
         name='predix-edge-sample-scaler-python',
-        version='1.0.5',
+        version='1.0.6',
         description='Predix Edge Sample Python App',
         long_description=long_description,
         install_requires=install_requires,

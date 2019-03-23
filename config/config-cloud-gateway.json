@@ -20,7 +20,7 @@
                 },
                 "timeseries": {
                     "transport_addr": "wss://gateway-predix-data-services.run.aws-usw02-pr.ice.predix.io/v1/stream/messages",
-                    "predix_zone_id": "your-predix-zone-id"
+                    "predix_zone_id": "your-predix-zone-id",
                     "token_file": "/edge-agent/access_token",
                     "proxy_url": "$https_proxy"
                 }
